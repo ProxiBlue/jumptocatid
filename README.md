@@ -11,3 +11,4 @@ The tree is not updated. (can anyone fix this?)
 
 Ref: http://magento.stackexchange.com/questions/11044/find-category-by-id-in-magento-backend
 
+Only tested on Magento ver. 1.7.0.2
