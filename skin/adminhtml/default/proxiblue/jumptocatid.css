@@ -1,0 +1,12 @@
+.direct-id {
+    width: 70px;
+}
+.load-by-id{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.load-by-id button {
+    top: 1px;
+    position: relative;
+}
+
