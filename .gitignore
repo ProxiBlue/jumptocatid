@@ -1,0 +1,7 @@
+backtickfix
+*~
+*.sql
+*.tar.*
+*.bz2
+releases
+makeRelease.sh

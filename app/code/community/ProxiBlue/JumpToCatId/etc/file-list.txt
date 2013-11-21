@@ -1,4 +1,4 @@
 /app/code/community/ProxiBlue/JumpToCatId
-/app/code/etc/modules/ProxiBlue_JumpToCatId.xml
+/app/etc/modules/ProxiBlue_JumpToCatId.xml
 /app/design/adminhtml/default/proxiblue
 /skin/adminhtml/default/proxiblue

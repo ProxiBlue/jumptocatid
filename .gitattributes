@@ -1,0 +1,7 @@
+README export-ignore
+backtickfix export-ignore
+makeRelease.sh export-ignore
+makePatch.sh export-ignore
+.gitattributes export-ignore  
+.gitignore export-ignore
+patch* export-ignore
