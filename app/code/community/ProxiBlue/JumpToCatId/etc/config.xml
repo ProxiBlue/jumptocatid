@@ -2,18 +2,9 @@
 <config>
     <modules>
         <ProxiBlue_JumpToCatId>
-            <version>0.0.1</version>
+            <version>1.0.0</version>
         </ProxiBlue_JumpToCatId>
     </modules>
-    <stores>
-        <admin>
-            <design>
-                <theme>
-                    <default>proxiblue</default>
-                </theme>
-            </design>
-        </admin>
-    </stores>
     <adminhtml>
         <layout>
             <updates>
