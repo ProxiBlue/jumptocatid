@@ -15,8 +15,12 @@
         <?php endif; ?>
     </div>
     <div class="load-by-id">
-        <input placeholder="Category Id" name="id" class="input-text direct-id" id="direct-id" type="text"/>
+        <form action="#" onsubmit="event.preventDefault(); $('direct-id-button').click();">
+            <input placeholder="Category Id" name="id" class="input-text direct-id" id="direct-id" type="text" style="width: 80px;"/>
+        </form>
         <button id="direct-id-button" title="Load Category" type="button" class="scalable" onclick="tree.jumpToCategory($('direct-id').value)" style=""><span><span><span>Load Category</span></span></span></button>
+        <span id="load-by-id-error-text" style="color: red; display: none;">Category does not exist</span>
+        <br/><br/>
     </div>
     <?php if ($this->getRoot()): ?>
     <div class="tree-holder">
@@ -166,20 +170,41 @@ Ext.extend(Ext.tree.TreePanel.Enhanced, Ext.tree.TreePanel, {
     
     jumpToCategory : function(id)
     {
-        var baseUrl = '<?php echo $this->getEditUrl() ?>';
-        var urlExt = (this.storeId?'store/'+this.storeId+'/':'')+'id/'+id+'/';
-        var url = parseSidUrl(baseUrl, urlExt);
-
+        id=parseInt(id); //prevent typing 1.5 to get to category 1
+        if (id == 1) {
+            $('load-by-id-error-text').show(); //category 1 (root catalogue) isn't normally accessible, let's keep it that way
+            return;
+        }
         this.currentNodeId = id;
         if (!this.useAjax) {
+            var baseUrl = '<?php echo $this->getEditUrl() ?>';
+            var urlExt = (this.storeId?'store/'+this.storeId+'/':'')+'id/'+id+'/';
+            var url = parseSidUrl(baseUrl, urlExt);
             setLocation(url);
             return;
         }
-        if (category_info_tabsJsTabs.activeTab) {
-            var params = {active_tab_id:category_info_tabsJsTabs.activeTab.id};
-        }
-        updateContent(url, params);
-        this.getNodeById(this.currentNodeId)
+
+        // Make request that pretends to be a store switch request, but don't switch stores
+        // Nice easy way to select a category by its id
+        $('load-by-id-error-text').hide();
+        var storeParam = 'store/'+this.storeId + '/';
+        storeParam = storeParam + 'id/' + id + '/';
+        var requestUrl = this.switchTreeUrl + storeParam;
+        new Ajax.Request(requestUrl, {
+            parameters : {store: this.storeId, form_key: FORM_KEY, isAjax: 1},
+            method     : 'post',
+            onComplete : function(transport) {
+                var response = transport.responseJSON || transport.responseText.evalJSON(true) || {};
+                if (!response.parameters) {
+                    return false;
+                }
+                if (response.parameters.category_id == 0) { //luckily the ajax returns 0 for the cat_id if the category doesn't exist
+                    $('load-by-id-error-text').show();
+                    return false;
+                }
+                _renderNewTree(response, storeParam);
+            }
+        });
     }
     
 });
